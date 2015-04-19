@@ -16,6 +16,7 @@ auth_token = "fe17ee3c605d7e44cb2462556f986b99"
 @app.route('/', methods=["GET", "POST"])
 def hello_monkey(): #respond to text
     body = request.form["Body"]
+    game.giveCommand(body)
     print("{}".format(body))
     return ""
 
