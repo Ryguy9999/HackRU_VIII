@@ -139,7 +139,7 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        if ship.stun_timer > 0
+        if ship.stun_timer > 0:
             camera.x = ship.x - S_WIDTH / 2
             camera.y = ship.y - S_HEIGHT / 2
         else:
