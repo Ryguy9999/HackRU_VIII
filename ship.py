@@ -15,6 +15,9 @@ class Ship:
 		self.rotation = 0
 		self.velocity = 0
 		self.target_rotation = 0
+		self.delta_x = 0
+		self.delta_y = 0
+		self.stun_timer = 0
 
 	def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity
@@ -29,6 +32,17 @@ class Ship:
 				self.rotation -= MAX_TURN
 			else:
 				self.rotation = self.target_rotation
+
+		if self.stun_timer <> 0:
+			self.x += self.delta_x
+			self.y += self.delta_y
+			self.rotation += 15
+			self.target_rotation = self.rotation
+			self.stun_timer -= 1
+		else:
+			self.delta_x = 0
+			self.delta_y = 0
+
 	def collides(self, obj):
 		return not (self.x + self.width < obj.x or obj.x + obj.width < self.x or self.y + self.height < obj.y or obj.y + obj.height < self.y)
 

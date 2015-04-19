@@ -65,7 +65,9 @@ def gameFunc(commandsQueue):
             asteroid.update()
             wrap(asteroid, WIDTH, HEIGHT)
             if asteroid.collides(ship):
-                ship.target_rotation = asteroid.rotation
+                ship.stun_timer = 100
+                ship.delta_x = (ship.x - asteroid.x) / 16
+                ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
                 score -= randrange(100, 300)
         if len(asteroids) < 10:
