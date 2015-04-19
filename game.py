@@ -116,7 +116,7 @@ def gameFunc(commandsQueue):
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
-        if goal_x != -1 and distance(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height /2, goal_x, goal_y):
+        if goal_x != -1 and distance(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height /2, goal_x, goal_y) < 128:
             score += 100000
             goal_x = -1
             goal_y = -1
