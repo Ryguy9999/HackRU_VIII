@@ -19,15 +19,16 @@ def tile(img, width, height):
         for y in range(0, height / img.get_rect().height + 1):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
-def wrap(rect, width, height):
-    if rect.x < -rect.width / 2:
-        rect.x = WIDTH
-    if rect.y < -rect.height / 2:
-        rect.y = HEIGHT
-    if rect.x > WIDTH:
-        rect.x = 0
-    if rect.y > HEIGHT:
-        rect.y = 0
+def wrap(rect, width, height, offset = (0, 0)):
+    (x, y) = offset
+    if rect.x < x + -rect.width / 2:
+        rect.x = x + WIDTH
+    if rect.y < y + -rect.height / 2:
+        rect.y = y + HEIGHT
+    if rect.x > x + WIDTH:
+        rect.x = x
+    if rect.y > y + HEIGHT:
+        rect.y = y
 def gameFunc(commandsQueue):
     global commands
     global score
@@ -64,7 +65,7 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
-            wrap(asteroid, WIDTH, HEIGHT)
+            wrap(asteroid, WIDTH, HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
                 ship.stun_timer = 100
                 ship.delta_x = (ship.x - asteroid.x) / 16
@@ -79,7 +80,7 @@ def gameFunc(commandsQueue):
                     if asteroid.collides(camera):
                         crunchSound.play()
                     break
-        if len(asteroids) < 100:
+        if len(asteroids) < 10:
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
@@ -139,7 +140,7 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        if ship.stun_timer > 0
+        if ship.stun_timer > 0:
             camera.x = ship.x - S_WIDTH / 2
             camera.y = ship.y - S_HEIGHT / 2
         else:
@@ -177,3 +178,4 @@ def gameFunc(commandsQueue):
         display.blit(labelScore, (800 - 200, 0))
         pygame.display.flip()
         clock.tick(60)
+        print clock.get_fps()
