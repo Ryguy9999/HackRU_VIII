@@ -2,10 +2,15 @@
 
 @author: Jason Carrete
 '''
-from flask import Flask, request, redirect
 import twilio.twiml
 import threading, game
-thread = Thread(target = gameFunc)
+from flask import Flask, request, redirect
+from threading import Thread
+from game import gameFunc
+from Queue import Queue
+
+commandsQueue = Queue()
+thread = Thread(target = gameFunc, args=(commandsQueue,))
 thread.start()
 
 app = Flask(__name__)
@@ -16,7 +21,7 @@ commands = "ABRID"
 def hello_monkey(): #respond to text
     body = request.form["Body"]
     if body in commands:
-        game.giveCommand(body)
+        commandsQueue.put(body)
     return ""
 
 if __name__ == "__main__":

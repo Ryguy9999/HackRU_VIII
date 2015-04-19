@@ -8,10 +8,7 @@ def tile(img, width, height):
         for y in range(0, height / img.get_rect().height):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
-def giveCommand(command):
-    global commands
-    commands.append(command)
-def gameFunc():
+def gameFunc(commandsQueue):
     global commands
     pygame.init()
     clock = pygame.time.Clock()
@@ -26,10 +23,10 @@ def gameFunc():
             if event.type == QUIT:
                 sys.exit()
                 pygame.quit()
-        while len(commands) > 0:
-            cmd = commands.pop()
+        while not commandsQueue.empty():
+            cmd = commandsQueue.get()
             if cmd == "A":
-                print "A"
+                ship.x = 0
             elif cmd == "B":
                 print "B"
             elif cmd == "R":
@@ -43,4 +40,3 @@ def gameFunc():
         display.blit(backRect, (0, 0, 640, 480))
         display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         pygame.display.flip()
-gameFunc()
