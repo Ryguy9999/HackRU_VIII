@@ -76,11 +76,11 @@ def gameFunc(commandsQueue):
             asteroid.update()
             wrap(asteroid, S_WIDTH, S_HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
-                ship.stun_timer = 100
+                ship.stun_timer = 60
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(250, 1000)
+                score -= randrange(250, 500)
                 crunchSound.play()
                 explosions.append(Explosion(asteroid.x, asteroid.y))
             for asteroid2 in asteroids:
@@ -109,7 +109,7 @@ def gameFunc(commandsQueue):
                     asteroids.remove(asteroid)
                     pews.remove(pew)
                     crunchSound.play()
-                    score += randrange(1000, 2000)
+                    score += randrange(1000, 3000)
                     if asteroid.big:
                         asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
                         asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
