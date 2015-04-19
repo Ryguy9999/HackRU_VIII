@@ -82,7 +82,7 @@ def gameFunc(commandsQueue):
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
         for ast in asteroids:
-            if not(ast.x < camera.x or ast.y < camera.y or ast.x > camera.x + camera.width or ast.y > camera.y + camera.height):
+            if not(ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height):
                 offScreen = False
         if offScreen:
             for i in range(3):
@@ -90,7 +90,7 @@ def gameFunc(commandsQueue):
             for i in range(3):
                 x = randrange(1, WIDTH)
                 y = randrange(1, HEIGHT)
-                while ast.x < camera.x and ast.y < camera.y and ast.x > camera.x + camera.width and ast.y > camera.y + camera.height:
+                while ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height:
                     x = randrange(1, WIDTH)
                     y = randrange(1, HEIGHT)
                 asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
