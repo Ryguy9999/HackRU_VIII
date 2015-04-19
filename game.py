@@ -26,6 +26,7 @@ def wrap(rect, width, height):
         rect.y = height - rect.y
 def gameFunc(commandsQueue):
     global commands
+    (WIDTH, HEIGHT) = (800, 600)
     pygame.init()
     font = pygame.font.SysFont(None, 16)
     pygame.mixer.init()
@@ -37,16 +38,16 @@ def gameFunc(commandsQueue):
     labelI = font.render("I: Left", 1, (85, 90, 215))
     labelD = font.render("D: Right", 1, (85, 90, 215))
     clock = pygame.time.Clock()
-    display = pygame.display.set_mode((640, 480), 0, 32)
+    display = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.velocity = 1
     back = pygame.image.load("back.png")
-    backRect = tile(back, 640, 480)
+    backRect = tile(back, WIDTH, HEIGHT)
     asteroids = []
     for j in range(1, 5):
         size = randrange(30, 50)
-        asteroids.append(Entity(randrange(1, 640), randrange(1, 480), size, size, randrange(2, 4), randrange(1, 360)))
+        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -76,8 +77,8 @@ def gameFunc(commandsQueue):
                 pew.play()
         clock.tick(60)
         ship.update()
-        wrap(ship, 640, 480)
-        display.blit(backRect, (0, 0, 640, 480))
+        wrap(ship, WIDTH, HEIGHT)
+        display.blit(backRect, (0, 0, WIDTH, HEIGHT))
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(img, rect)
