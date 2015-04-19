@@ -58,7 +58,6 @@ class Ship:
 					self.delta_y = 0;
 				else:
 					self.delta_y += 0.1;
-		print str(self.delta_x) + " " + str(self.delta_y)
 		self.x += self.delta_x
 		self.y += self.delta_y
 
