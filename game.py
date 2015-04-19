@@ -19,15 +19,16 @@ def tile(img, width, height):
         for y in range(0, height / img.get_rect().height + 1):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
-def wrap(rect, width, height):
-    if rect.x < -rect.width / 2:
-        rect.x = WIDTH
-    if rect.y < -rect.height / 2:
-        rect.y = HEIGHT
-    if rect.x > WIDTH:
-        rect.x = 0
-    if rect.y > HEIGHT:
-        rect.y = 0
+def wrap(rect, width, height, offset = (0, 0)):
+    (x, y) = offset
+    if rect.x < x + -rect.width / 2:
+        rect.x = x + WIDTH
+    if rect.y < y + -rect.height / 2:
+        rect.y = y + HEIGHT
+    if rect.x > x + WIDTH:
+        rect.x = x
+    if rect.y > y + HEIGHT:
+        rect.y = y
 def gameFunc(commandsQueue):
     global commands
     global score
@@ -49,6 +50,10 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
+    ship.target_rotation = 305
+    ship.velocity = 6
+    goalTex = pygame.image.load("goal.png")
+    (goal_x, goal_y) = (WIDTH / 2, HEIGHT / 2)
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
@@ -64,13 +69,13 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
-            wrap(asteroid, WIDTH, HEIGHT)
+            wrap(asteroid, S_WIDTH, S_HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
                 ship.stun_timer = 100
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(500, 1000)
+                score -= randrange(250, 1000)
                 crunchSound.play()
             for asteroid2 in asteroids:
                 if asteroid != asteroid2 and asteroid.collides(asteroid2):
@@ -79,13 +84,15 @@ def gameFunc(commandsQueue):
                     if asteroid.collides(camera):
                         crunchSound.play()
                     break
-        if len(asteroids) < 100:
+        if len(asteroids) < 50:
+            print "new asteroid"
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
                 rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             asteroids.append(Entity(rect.x, rect.y, rect.width, rect.height, randrange(2, 4), randrange(1, 360)))
 
+<<<<<<< HEAD
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
         for ast in asteroids:
@@ -101,6 +108,9 @@ def gameFunc(commandsQueue):
                     x = randrange(1, WIDTH)
                     y = randrange(1, HEIGHT)
                 asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
+=======
+
+>>>>>>> 9f08083fa7e17e260926e75ba17a23c0f7daf1f5
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
@@ -139,7 +149,7 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        if ship.stun_timer > 0
+        if ship.stun_timer > 0:
             camera.x = ship.x - S_WIDTH / 2
             camera.y = ship.y - S_HEIGHT / 2
         else:
@@ -163,9 +173,9 @@ def gameFunc(commandsQueue):
             (img, rect) = rotate_center(pewTex, pew.rotation, pygame.Rect(pew.x, pew.y, pew.width, pew.height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
-            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
+            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroidTex.get_rect().width, asteroidTex.get_rect().height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
-        display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
+        display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
