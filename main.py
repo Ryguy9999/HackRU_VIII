@@ -3,19 +3,9 @@
 @author: Jason Carrete
 '''
 from flask import Flask, request, redirect
-import twilio.twiml, threading, pygame, sys
-from pygame.locals import *
-
-def game():
-    pygame.init()
-    display = pygame.display.set_mode((640, 480), 0, 32)
-    while 1:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                sys.exit()
-                pygame.quit()
-gameThread = threading.Thread(target = game)
-gameThread.start()
+import twilio.twiml, threading, game
+thread = Thread(target = gameFunc)
+thread.start()
 
 app = Flask(__name__)
 
