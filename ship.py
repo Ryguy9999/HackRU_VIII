@@ -1,11 +1,11 @@
 import math
+MAX_SPEED = 6
+MAX_REVERSE = -3
+ACCELERATION = 2
+ROTATION = 3
+BRAKING = 0.1
+REVERSE = 2
 class Ship:
-	MAX_SPEED = 6
-	MAX_REVERSE = -3
-	ACCELERATION = 0.1
-	ROTATION = 3
-	BRAKING = 0.1
-	REVERSE = 0.05
 	def __init__(self, x, y, width, height):
 		self.x = x
 		self.y = y
