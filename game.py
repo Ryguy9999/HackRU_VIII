@@ -2,7 +2,7 @@ import pygame, sys
 from pygame.locals import *
 from ship import *
 commands = []
-def rot_center(image, angle, rect):
+def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
     rot_image = pygame.transform.rotozoom(image, angle, 1)
     rot_rect = rot_image.get_rect(center=rect.center)
@@ -58,5 +58,6 @@ def gameFunc(commandsQueue):
         ship.update()
         wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
-        display.blit(rotate_center(shipTex, ship.rotation, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height)))
+        (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(img, rect)
         pygame.display.flip()
