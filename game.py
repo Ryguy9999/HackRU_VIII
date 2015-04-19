@@ -166,3 +166,4 @@ def gameFunc(commandsQueue):
         display.blit(labelScore, (800 - 200, 0))
         pygame.display.flip()
         clock.tick(60)
+        print clock.get_fps()
