@@ -5,12 +5,14 @@
 import math
 
 class Entity:
-    def __init__(self, x, y, big, speed, rotation):
+    def __init__(self, x, y, big, speed, rotation, width, height):
         self.x = x
         self.y = y
         self.big = big
         self.velocity = speed
         self.rotation = rotation
+        self.width = width
+        self.height = height
 
     def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity

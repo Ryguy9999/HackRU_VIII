@@ -4,10 +4,13 @@ from pygame.locals import *
 from ship import *
 from Entity import Entity
 from pew import Pew
+from explosions import Explosion
 commands = []
 score = 0
 (WIDTH, HEIGHT) = (5000, 5000)
 (S_WIDTH, S_HEIGHT) = (800, 600)
+def distance(x1, y1, x2, y2):
+    return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
     rot_image = pygame.transform.rotozoom(image, angle, 1)
@@ -38,7 +41,9 @@ def gameFunc(commandsQueue):
     pewSound = pygame.mixer.Sound("pewpew.wav")
     crunchSound = pygame.mixer.Sound("crunch.wav")
     pewTex = pygame.image.load("pew.png")
+    fwoom = pygame.mixer.Sound("fwoom.wav")
     asteroidTex = pygame.image.load("asteroid.png")
+    explosionTex = pygame.image.load("explosion.png")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 215, 200))
     labelA = font.render("A: Accelerate", 1, (85, 215, 200))
     labelR = font.render("R: Reverse", 1, (85, 215, 200))
@@ -59,8 +64,9 @@ def gameFunc(commandsQueue):
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
     asteroids = []
     pews = []
+    explosions = []
     for j in range(1, 10):
-        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360)))
+        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360), asteroidTex.get_rect().width, asteroidTex.get_rect().height))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -76,20 +82,25 @@ def gameFunc(commandsQueue):
                 asteroids.remove(asteroid)
                 score -= randrange(250, 1000)
                 crunchSound.play()
+                explosions.append(Explosion(asteroid.x, asteroid.y))
             for asteroid2 in asteroids:
                 if asteroid != asteroid2 and asteroid.collides(asteroid2):
                     asteroids.remove(asteroid)
                     asteroids.remove(asteroid2)
+                    explosions.append(Explosion(asteroid.x, asteroid.y))
                     if asteroid.collides(camera):
                         crunchSound.play()
                     break
+        for explosion in explosions:
+            if explosion.update():
+                explosions.remove(explosion)
+                continue
         if len(asteroids) < 50:
-            print "new asteroid"
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
                 rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
-            asteroids.append(Entity(rect.x, rect.y, bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360)))
+            asteroids.append(Entity(rect.x, rect.y, bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360), asteroidTex.get_rect().width, asteroidTex.get_rect().height))
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
@@ -105,11 +116,16 @@ def gameFunc(commandsQueue):
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
+        if goal_x != -1 and distance(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height /2, goal_x, goal_y):
+            score += 100000
+            goal_x = -1
+            goal_y = -1
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
             #Accelerate
             if cmd == "A" or cmd == 'a':
                 ship.accelerate()
+                fwoom.play()
             #Brake
             elif cmd == "B" or cmd == 'b':
                     ship.brake()
@@ -152,7 +168,10 @@ def gameFunc(commandsQueue):
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroidTex.get_rect().width, asteroidTex.get_rect().height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
-        display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
+        for explosion in explosions:
+            display.blit(explosionTex, (explosion.x - camera.x, explosion.y - camera.y, explosionTex.get_rect().width, explosionTex.get_rect().height), explosion.get_piece())
+        if goal_x != -1:
+            display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
