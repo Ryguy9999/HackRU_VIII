@@ -52,6 +52,8 @@ def gameFunc(commandsQueue):
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.target_rotation = 305
     ship.velocity = 6
+    goalTex = pygame.image.load("goal.png")
+    (goal_x, goal_y) = (WIDTH / 2, HEIGHT / 2)
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
@@ -155,7 +157,7 @@ def gameFunc(commandsQueue):
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
-        display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
+        display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
