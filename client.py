@@ -12,7 +12,7 @@ commandsQueue = Queue()
 def netcode(commandsQueue):
     host = "45.33.88.126"
     port = 9999
-    client = socket.socket()
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((host, port))
     while True:
         string = client.recv(4096)
