@@ -3,6 +3,7 @@ from random import randrange
 from pygame.locals import *
 from ship import *
 from Entity import Entity
+from pew import Pew
 commands = []
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -31,6 +32,7 @@ def gameFunc(commandsQueue):
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
     pew = pygame.mixer.Sound("pewpew.wav")
+    pewTex = pygame.image.load("pew.png")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 215, 200))
     labelA = font.render("A: Accelerate", 1, (85, 215, 200))
     labelR = font.render("R: Reverse", 1, (85, 215, 200))
@@ -90,6 +92,7 @@ def gameFunc(commandsQueue):
             #Shoot
             elif cmd == "S":
                 pew.play()
+                pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + ship.Tex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
         clock.tick(60)
         ship.update()
         wrap(ship, WIDTH, HEIGHT)
@@ -97,6 +100,9 @@ def gameFunc(commandsQueue):
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(img, rect)
         display.blit(labelNumber, (0, 0))
+        for pew in pews:
+            (img, rect) = rotate_center(pewTex, pew.rotation, pygame.Rect(pew.x, pew.y, pew.width, pew.height))
+            display.blit(img, rect)
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
             display.blit(img, rect)
