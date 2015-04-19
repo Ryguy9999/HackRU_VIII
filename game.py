@@ -6,7 +6,7 @@ from Entity import Entity
 from pew import Pew
 commands = []
 score = 0
-(WIDTH, HEIGHT) = (3000, 3000)
+(WIDTH, HEIGHT) = (5000, 5000)
 (S_WIDTH, S_HEIGHT) = (800, 600)
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -72,7 +72,14 @@ def gameFunc(commandsQueue):
                 asteroids.remove(asteroid)
                 score -= randrange(500, 1000)
                 crunchSound.play()
-        if len(asteroids) < 10:
+            for asteroid2 in asteroids:
+                if asteroid != asteroid2 and asteroid.collides(asteroid2):
+                    asteroids.remove(asteroid)
+                    asteroids.remove(asteroid2)
+                    if asteroid.collides(camera):
+                        crunchSound.play()
+                    break
+        if len(asteroids) < 100:
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
