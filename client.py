@@ -2,7 +2,7 @@
 
 @author: Jason Carrete
 '''
-import threading, game
+import threading, game, socket
 from flask import Flask, request, redirect
 from threading import Thread
 from game import gameFunc
@@ -10,10 +10,10 @@ from Queue import Queue
 
 commandsQueue = Queue()
 def netcode(commandsQueue):
-    host = "45.33.88.126"
-    port = 5000
+    host = "localhost"
+    port = 9999
     client = socket.socket()
-    client.bind((host, port))
+    client.connect((host, port))
     while True:
         string = client.recv(4096)
         for char in string:
