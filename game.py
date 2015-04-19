@@ -68,6 +68,7 @@ def gameFunc(commandsQueue):
             if asteroid.collides(ship):
                 ship.target_rotation = asteroid.rotation
                 asteroids.remove(asteroid)
+                score -= randrange(100, 300)
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
@@ -75,6 +76,7 @@ def gameFunc(commandsQueue):
                 if pew.collides(asteroid):
                     asteroids.remove(asteroid)
                     pews.remove(pew)
+                    score += randrange(1000, 2000)
                     if asteroid.width > 20:
                         size = asteroid.width / 2 + random.randint(-3, 3)
                         asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
@@ -136,6 +138,5 @@ def gameFunc(commandsQueue):
         display.blit(labelS, (0, 150))
         labelScore = font.render("SCORE: " + str(score), 1, (85, 215, 200))
         display.blit(labelScore, (800 - 200, 0))
-        display.blit(img, rect)
         pygame.display.flip()
         clock.tick(60)
