@@ -50,6 +50,10 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
+    ship.target_rotation = 305
+    ship.velocity = 6
+    goalTex = pygame.image.load("goal.png")
+    (goal_x, goal_y) = (WIDTH / 2, HEIGHT / 2)
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
@@ -64,13 +68,13 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
-            wrap(asteroid, WIDTH, HEIGHT, (camera.x, camera.y))
+            wrap(asteroid, S_WIDTH, S_HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
                 ship.stun_timer = 100
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(500, 1000)
+                score -= randrange(250, 1000)
                 crunchSound.play()
             for asteroid2 in asteroids:
                 if asteroid != asteroid2 and asteroid.collides(asteroid2):
@@ -150,9 +154,9 @@ def gameFunc(commandsQueue):
             (img, rect) = rotate_center(pewTex, pew.rotation, pygame.Rect(pew.x, pew.y, pew.width, pew.height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
-            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
+            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroidTex.get_rect().width, asteroidTex.get_rect().height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
-        display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
+        display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
