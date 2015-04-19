@@ -2,7 +2,18 @@
 
 @author: Jason Carrete
 '''
-import threading, game, socket
+#!/usr/bin/python           # This is client.py file
+
+import socket               # Import socket module
+
+s = socket.socket()         # Create a socket object
+host = "45.33.88.126" # Get local machine name
+port = 12345                # Reserve a port for your service.
+
+s.connect((host, port))
+print s.recv(1024)
+s.close                     # Close the socket when done
+'''import threading, game, socket
 from flask import Flask, request, redirect
 from threading import Thread
 from game import gameFunc
@@ -22,3 +33,4 @@ netThread = Thread(target = netcode, args=(commandsQueue,))
 thread = Thread(target = gameFunc, args=(commandsQueue,))
 netThread.start()
 thread.start()
+'''
