@@ -9,7 +9,7 @@ from pygame.locals import *
 def game():
     pygame.init()
     display = pygame.display.set_mode((640, 480), 0, 32)
-    while True:
+    while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
                 sys.exit()
