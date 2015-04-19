@@ -25,16 +25,21 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
+            #Accelerate
             if cmd == "A":
-                ship.x = 0
+                ship.accelerate()
+            #Brake
             elif cmd == "B":
-                print "B"
+                ship.brake()
+            #Reverse
             elif cmd == "R":
-                print "R"
+                ship.reverse()
+            #Izquireda- Left
             elif cmd == "I":
-                print "I"
+                ship.left()
+            #Derecha- Right
             elif cmd == "D":
-                print "D"
+                ship.right()
         clock.tick(60)
         ship.update()
         display.blit(backRect, (0, 0, 640, 480))
