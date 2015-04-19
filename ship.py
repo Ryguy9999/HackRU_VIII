@@ -2,6 +2,7 @@ class Ship:
 	MAX_SPEED = 6
 	MAX_REVERSE = -3
 	ACCELERATION = 0.1
+	ROTATION = 3
 	BRAKING = 0.1
 	REVERSE = 0.05
 	def __init__(self, x, y, width, height):
@@ -9,6 +10,7 @@ class Ship:
 		self.y = y
 		self.width = width
 		self.height = height
+		self.rotation = 0
 		self.velocity = 0
 
 	def collides(self, obj):
@@ -39,3 +41,13 @@ class Ship:
 				self.velocity = MAX_REVERSE
 			else:
 				self.velocity -= REVERSE
+
+	def left(self):
+		self.rotation -= ROTATION
+		if self.rotation < 0:
+			self.rotation += 360
+
+	def right(self):
+		self.rotation += ROTATION
+		if self.rotation > 360:
+			self.rotation -= 360
