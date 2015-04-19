@@ -64,19 +64,13 @@ def gameFunc(commandsQueue):
         ship.update()
         wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
-<<<<<<< HEAD
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(img, rect)
-=======
-<<<<<<< HEAD
         display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(labelA, (0, 0))
         display.blit(labelB, (0, 25))
         display.blit(labelR, (0, 50))
         display.blit(labelI, (0, 75))
         display.blit(labelD, (0, 100))
-=======
-        display.blit(rotate_center(shipTex, ship.rotation, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height)))
->>>>>>> 7740b2902cba0095652a62430b7dd91e63a44b97
->>>>>>> ad0883bd040f2b9b2142ad54c040484783b06fe0
+        display.blit(img, rect)
         pygame.display.flip()
