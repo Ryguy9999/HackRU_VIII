@@ -70,7 +70,7 @@ def gameFunc(commandsQueue):
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(100, 300)
+                score -= randrange(500, 1000)
                 crunchSound.play()
         if len(asteroids) < 10:
             size = randrange(15, 50)
@@ -90,7 +90,7 @@ def gameFunc(commandsQueue):
             for i in range(3):
                 x = randrange(1, WIDTH)
                 y = randrange(1, HEIGHT)
-                while ast.x < camera.x or ast.y < camera.y or ast.x > camera.x + camera.width or ast.y > camera.y + camera.height:
+                while ast.x < camera.x and ast.y < camera.y and ast.x > camera.x + camera.width and ast.y > camera.y + camera.height:
                     x = randrange(1, WIDTH)
                     y = randrange(1, HEIGHT)
                 asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))

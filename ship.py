@@ -34,8 +34,6 @@ class Ship:
 				self.rotation = self.target_rotation
 
 		if self.stun_timer <> 0:
-			self.x += self.delta_x
-			self.y += self.delta_y
 			self.rotation += 15
 			self.target_rotation = self.rotation
 			self.stun_timer -= 1
@@ -61,6 +59,8 @@ class Ship:
 				else:
 					self.delta_y += 0.1;
 		print str(self.delta_x) + " " + str(self.delta_y)
+		self.x += self.delta_x
+		self.y += self.delta_y
 
 	def collides(self, obj):
 		return not (self.x + self.width < obj.x or obj.x + obj.width < self.x or self.y + self.height < obj.y or obj.y + obj.height < self.y)
