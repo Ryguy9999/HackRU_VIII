@@ -38,7 +38,6 @@ def gameFunc(commandsQueue):
     pygame.init()
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
-    arrowTex = pygame.image.load("arrow")
     pewSound = pygame.mixer.Sound("pewpew.wav")
     crunchSound = pygame.mixer.Sound("crunch.wav")
     pewTex = pygame.image.load("pew.png")
@@ -66,7 +65,6 @@ def gameFunc(commandsQueue):
     asteroids = []
     pews = []
     explosions = []
-    (arrow_x, arrow_y) = 0
     for j in range(1, 10):
         asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360), asteroidTex.get_rect().width, asteroidTex.get_rect().height))
     while 1:
@@ -175,7 +173,7 @@ def gameFunc(commandsQueue):
         if goal_x != -1:
             display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         #Draw objective
-        
+
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
