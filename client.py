@@ -10,7 +10,7 @@ from Queue import Queue
 
 commandsQueue = Queue()
 def netcode(commandsQueue):
-    host = "localhost"
+    host = "45.33.88.126"
     port = 9999
     client = socket.socket()
     client.connect((host, port))

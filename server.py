@@ -5,11 +5,10 @@
 import twilio.twiml, socket
 from flask import Flask, request, redirect
 server = socket.socket()
-host = 'localhost'
+host = socket.gethostname()
 port = 9999
 server.bind((host, port))
 server.listen(5)
-client = None
 client, address = server.accept()
 print "Accepted"
 app = Flask(__name__)
