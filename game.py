@@ -35,6 +35,7 @@ def wrap(rect, width, height, offset = (0, 0)):
 def gameFunc(commandsQueue):
     global commands
     global score
+    comSent = []
     pygame.init()
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
@@ -52,6 +53,8 @@ def gameFunc(commandsQueue):
     labelD = font.render("D: Right", 1, (85, 215, 200))
     labelS = font.render("S: Shoot", 1, (85, 215, 200))
     clock = pygame.time.Clock()
+    info = pygame.display.Info()
+    (S_WIDTH, S_HEIGHT) = (1920, 1080)
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
@@ -116,12 +119,13 @@ def gameFunc(commandsQueue):
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
-        if goal_x != -1 and distance(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height /2, goal_x, goal_y) < 128:
+        if goal_x != -1 and distance(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height /2, goal_x, goal_y) < 160:
             score += 100000
             goal_x = -1
             goal_y = -1
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
+            comSent.append(cmd.upper())
             #Accelerate
             if cmd == "A" or cmd == 'a':
                 ship.accelerate()
@@ -142,6 +146,8 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
+        if len(comSent) > 10:
+            comSent.remove(comSent[0])
         if ship.stun_timer > 0:
             camera.x = ship.x - S_WIDTH / 2
             camera.y = ship.y - S_HEIGHT / 2
@@ -182,6 +188,11 @@ def gameFunc(commandsQueue):
         display.blit(labelD, (0, 125))
         display.blit(labelS, (0, 150))
         labelScore = font.render("SCORE: " + str(score), 1, (85, 215, 200))
-        display.blit(labelScore, (800 - 200, 0))
+        display.blit(labelScore, (S_WIDTH - 400, 0))
+        string = ""
+        for item in comSent:
+            string += item + " "
+        labelComs = font.render("Commands: " + string, 1, (85, 215, 200))
+        display.blit(labelComs, (S_WIDTH - 400, 50))
         pygame.display.flip()
         clock.tick(60)
