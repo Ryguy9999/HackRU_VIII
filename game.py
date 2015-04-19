@@ -74,7 +74,10 @@ def gameFunc(commandsQueue):
                 crunchSound.play()
         if len(asteroids) < 10:
             size = randrange(15, 50)
-            asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
+            rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
+            while camera.colliderect(rect):
+                rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
+            asteroids.append(Entity(rect.x, rect.y, rect.width, rect.height, randrange(2, 4), randrange(1, 360)))
 
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
