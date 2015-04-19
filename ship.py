@@ -22,18 +22,9 @@ class Ship:
 	def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity
 		self.y -= math.sin(math.radians(self.rotation)) * self.velocity
-		if self.rotation < self.target_rotation:
-			if self.rotation + 1 < self.target_rotation:
-				self.rotation += MAX_TURN
-			else:
-				self.rotation = self.target_rotation
-		elif self.rotation > self.target_rotation:
-			if self.rotation - MAX_TURN > self.target_rotation:
-				self.rotation -= MAX_TURN
-			else:
-				self.rotation = self.target_rotation
+		self.rotation = self.target_rotation
 
-		if self.stun_timer <> 0:
+		if self.stun_timer != 0:
 			self.rotation += 15
 			self.target_rotation = self.rotation
 			self.stun_timer -= 1
