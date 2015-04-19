@@ -64,7 +64,9 @@ def gameFunc(commandsQueue):
             asteroid.update()
             wrap(asteroid, WIDTH, HEIGHT)
             if asteroid.collides(ship):
-                ship.target_rotation = asteroid.rotation
+                ship.stun_timer = 100
+                ship.delta_x = (ship.x - asteroid.x) / 16
+                ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
         for pew in pews:
             pew.update()
@@ -131,6 +133,5 @@ def gameFunc(commandsQueue):
         display.blit(labelI, (0, 100))
         display.blit(labelD, (0, 125))
         display.blit(labelS, (0, 150))
-        display.blit(img, rect)
         pygame.display.flip()
         clock.tick(60)
