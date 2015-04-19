@@ -123,22 +123,13 @@ def gameFunc(commandsQueue):
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
-<<<<<<< HEAD
-            display.blit(img, rect)
-        labelCommands = ()
-=======
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
->>>>>>> b90c6733d38af115417edc700e4030437d89d896
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
         display.blit(labelR, (0, 75))
         display.blit(labelI, (0, 100))
         display.blit(labelD, (0, 125))
-<<<<<<< HEAD
         display.blit(labelS, (0, 150))
-        display.blit(img, rect)
-=======
->>>>>>> b90c6733d38af115417edc700e4030437d89d896
         pygame.display.flip()
         clock.tick(60)
