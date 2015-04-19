@@ -35,6 +35,7 @@ def gameFunc(commandsQueue):
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
     pewSound = pygame.mixer.Sound("pewpew.wav")
+    crunchSound = pygame.mixer.Sound("crunch.wav")
     pewTex = pygame.image.load("pew.png")
     asteroidTex = pygame.image.load("asteroid.png")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 215, 200))
@@ -70,6 +71,7 @@ def gameFunc(commandsQueue):
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
                 score -= randrange(100, 300)
+                crunchSound.play()
         if len(asteroids) < 10:
             size = randrange(15, 50)
             asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
@@ -91,6 +93,7 @@ def gameFunc(commandsQueue):
                 if pew.collides(asteroid):
                     asteroids.remove(asteroid)
                     pews.remove(pew)
+                    crunchSound.play()
                     score += randrange(1000, 2000)
                     if asteroid.width > 20:
                         size = asteroid.width / 2 + random.randint(-3, 3)
@@ -142,7 +145,7 @@ def gameFunc(commandsQueue):
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
-
+            display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
