@@ -19,15 +19,16 @@ def tile(img, width, height):
         for y in range(0, height / img.get_rect().height + 1):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
-def wrap(rect, width, height):
-    if rect.x < -rect.width / 2:
-        rect.x = WIDTH
-    if rect.y < -rect.height / 2:
-        rect.y = HEIGHT
-    if rect.x > WIDTH:
-        rect.x = 0
-    if rect.y > HEIGHT:
-        rect.y = 0
+def wrap(rect, width, height, offset = (0, 0)):
+    (x, y) = offset
+    if rect.x < x + -rect.width / 2:
+        rect.x = x + WIDTH
+    if rect.y < y + -rect.height / 2:
+        rect.y = y + HEIGHT
+    if rect.x > x + WIDTH:
+        rect.x = x
+    if rect.y > y + HEIGHT:
+        rect.y = y
 def gameFunc(commandsQueue):
     global commands
     global score
@@ -64,7 +65,7 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
-            wrap(asteroid, WIDTH, HEIGHT)
+            wrap(asteroid, WIDTH, HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
                 ship.stun_timer = 100
                 ship.delta_x = (ship.x - asteroid.x) / 16
@@ -79,7 +80,7 @@ def gameFunc(commandsQueue):
                     if asteroid.collides(camera):
                         crunchSound.play()
                     break
-        if len(asteroids) < 100:
+        if len(asteroids) < 10:
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
@@ -89,7 +90,7 @@ def gameFunc(commandsQueue):
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
         for ast in asteroids:
-            if not(ast.x < camera.x or ast.y < camera.y or ast.x > camera.x + camera.width or ast.y > camera.y + camera.height):
+            if not(ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height):
                 offScreen = False
         if offScreen:
             for i in range(3):
@@ -97,7 +98,7 @@ def gameFunc(commandsQueue):
             for i in range(3):
                 x = randrange(1, WIDTH)
                 y = randrange(1, HEIGHT)
-                while ast.x < camera.x and ast.y < camera.y and ast.x > camera.x + camera.width and ast.y > camera.y + camera.height:
+                while ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height:
                     x = randrange(1, WIDTH)
                     y = randrange(1, HEIGHT)
                 asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
