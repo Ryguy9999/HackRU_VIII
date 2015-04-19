@@ -1,21 +1,14 @@
-'''
-
-@author: Alex Berman
-'''
-import math
-
-class Entity:
+import Entity
+class Pew(Entity):
     def __init__(self, x, y, width, height, speed, rotation):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.velocity = speed
+        self.speed = speed
         self.rotation = rotation
-
+        self.lifetime = 1000
     def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity
 		self.y -= math.sin(math.radians(self.rotation)) * self.velocity
-
-    def collides(self, obj):
-		return not (self.x + self.width < obj.x or obj.x + obj.width < self.x or self.y + self.height < obj.y or obj.y + obj.height < self.y)
+        self.lifetime -= 1
