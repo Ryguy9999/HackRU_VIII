@@ -10,14 +10,13 @@ thread.start()
 
 app = Flask(__name__)
 
-account_sid = "PNdfd2b6f558dc8ff0e72877df59a1a63b"
-auth_token = "fe17ee3c605d7e44cb2462556f986b99"
+commands = "ABRID"
 
 @app.route('/', methods=["GET", "POST"])
 def hello_monkey(): #respond to text
     body = request.form["Body"]
-    game.giveCommand(body)
-    print("{}".format(body))
+    if body in commands:
+        game.giveCommand(body)
     return ""
 
 if __name__ == "__main__":
