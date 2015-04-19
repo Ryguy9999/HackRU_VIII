@@ -5,7 +5,8 @@ from ship import *
 from Entity import Entity
 from pew import Pew
 commands = []
-(WIDTH, HEIGHT) = (1600, 1200)
+score = 0
+(WIDTH, HEIGHT) = (3000, 3000)
 (S_WIDTH, S_HEIGHT) = (800, 600)
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -29,6 +30,7 @@ def wrap(rect, width, height):
         rect.y = 0
 def gameFunc(commandsQueue):
     global commands
+    global score
     pygame.init()
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
@@ -46,13 +48,12 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
-    ship.velocity = 6
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
     asteroids = []
     pews = []
-    for j in range(1, 5):
+    for j in range(1, 10):
         size = randrange(15, 50)
         asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
@@ -68,6 +69,10 @@ def gameFunc(commandsQueue):
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
+                score -= randrange(100, 300)
+        if len(asteroids) < 10:
+            size = randrange(15, 50)
+            asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
@@ -75,6 +80,7 @@ def gameFunc(commandsQueue):
                 if pew.collides(asteroid):
                     asteroids.remove(asteroid)
                     pews.remove(pew)
+                    score += randrange(1000, 2000)
                     if asteroid.width > 20:
                         size = asteroid.width / 2 + random.randint(-3, 3)
                         asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
@@ -125,7 +131,8 @@ def gameFunc(commandsQueue):
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
-            display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
+
+        display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
@@ -133,5 +140,7 @@ def gameFunc(commandsQueue):
         display.blit(labelI, (0, 100))
         display.blit(labelD, (0, 125))
         display.blit(labelS, (0, 150))
+        labelScore = font.render("SCORE: " + str(score), 1, (85, 215, 200))
+        display.blit(labelScore, (800 - 200, 0))
         pygame.display.flip()
         clock.tick(60)
