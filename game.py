@@ -82,7 +82,6 @@ def gameFunc(commandsQueue):
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(img, rect)
-        display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
