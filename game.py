@@ -17,13 +17,13 @@ def tile(img, width, height):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
 def wrap(rect, width, height):
-    if rect.x < 0:
-        rect.x = width + rect.x
-    if rect.y < 0:
-        rect.y = height + rect.y
-    if rect.x > width:
+    if rect.x < -rect.width:
+        rect.x = width + rect.width / 2
+    if rect.y < -rect.height:
+        rect.y = height + rect.height / 2
+    if rect.x > width + rect.width:
         rect.x = width - rect.x
-    if rect.y > height:
+    if rect.y > height + rect.height:
         rect.y = height - rect.y
 def gameFunc(commandsQueue):
     global commands
@@ -31,7 +31,7 @@ def gameFunc(commandsQueue):
     pygame.init()
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
-    pew = pygame.mixer.Sound("pewpew.wav")
+    pewSound = pygame.mixer.Sound("pewpew.wav")
     pewTex = pygame.image.load("pew.png")
     asteroidTex = pygame.image.load("asteroid.png")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 215, 200))
@@ -51,7 +51,7 @@ def gameFunc(commandsQueue):
     pews = []
     for j in range(1, 5):
         size = randrange(15, 50)
-        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
+        #asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -60,16 +60,22 @@ def gameFunc(commandsQueue):
         for asteroid in asteroids:
             asteroid.update()
             wrap(asteroid, WIDTH, HEIGHT)
+            if asteroid.collides(ship):
+                ship.target_rotation = asteroid.rotation
+                asteroids.remove(asteroid)
         for pew in pews:
             pew.update()
+            wrap(pew, WIDTH, HEIGHT)
             for asteroid in asteroids:
                 if pew.collides(asteroid):
                     asteroids.remove(asteroid)
+                    pews.remove(pew)
                     if asteroid.width > 20:
                         size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.add(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
                         size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.add(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
+                    break
             if pew.lifetime <= 0:
                 pews.remove(pew)
         while not commandsQueue.empty():
@@ -91,8 +97,8 @@ def gameFunc(commandsQueue):
                     ship.right()
             #Shoot
             elif cmd == "S" or cmd == 's':
-                pew.play()
-                pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + ship.Tex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
+                pewSound.play()
+                pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
         clock.tick(60)
         ship.update()
         wrap(ship, WIDTH, HEIGHT)

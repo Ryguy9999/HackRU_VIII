@@ -2,9 +2,10 @@ import math
 MAX_SPEED = 6
 MAX_REVERSE = -3
 ACCELERATION = 2
-ROTATION = 3
+ROTATION = 6
 BRAKING = 0.1
 REVERSE = 2
+MAX_TURN = 5
 class Ship:
 	def __init__(self, x, y, width, height):
 		self.x = x
@@ -13,11 +14,21 @@ class Ship:
 		self.height = height
 		self.rotation = 0
 		self.velocity = 0
+		self.target_rotation = 0
 
 	def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity
 		self.y -= math.sin(math.radians(self.rotation)) * self.velocity
-
+		if self.rotation < self.target_rotation:
+			if self.rotation + 1 < self.target_rotation:
+				self.rotation += MAX_TURN
+			else:
+				self.rotation = self.target_rotation
+		elif self.rotation > self.target_rotation:
+			if self.rotation - MAX_TURN > self.target_rotation:
+				self.rotation -= MAX_TURN
+			else:
+				self.rotation = self.target_rotation
 	def collides(self, obj):
 		return not (self.x + self.width < obj.x or obj.x + obj.width < self.x or self.y + self.height < obj.y or obj.y + obj.height < self.y)
 
@@ -48,11 +59,11 @@ class Ship:
 				self.velocity -= REVERSE
 
 	def left(self):
-		self.rotation -= ROTATION
-		if self.rotation < 0:
-			self.rotation += 360
+		self.target_rotation -= ROTATION
+		if self.target_rotation < 0:
+			self.target_rotation += 360
 
 	def right(self):
-		self.rotation += ROTATION
-		if self.rotation > 360:
-			self.rotation -= 360
+		self.target_rotation += ROTATION
+		if self.target_rotation > 360:
+			self.target_rotation -= 360

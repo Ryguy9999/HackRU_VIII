@@ -1,3 +1,4 @@
+import math
 from Entity import Entity
 class Pew(Entity):
     def __init__(self, x, y, width, height, speed, rotation):
@@ -5,9 +6,9 @@ class Pew(Entity):
         self.y = y
         self.width = width
         self.height = height
-        self.speed = speed
+        self.velocity = speed
         self.rotation = rotation
-        self.lifetime = 1000
+        self.lifetime = 100
     def update(self):
         self.lifetime = self.lifetime - 1
         self.x += math.cos(math.radians(self.rotation)) * self.velocity
