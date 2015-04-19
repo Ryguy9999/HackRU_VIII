@@ -1,6 +1,8 @@
 import pygame, sys, random
+from random import randrange
 from pygame.locals import *
 from ship import *
+from Entity import Entity
 commands = []
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -24,26 +26,29 @@ def wrap(rect, width, height):
         rect.y = height - rect.y
 def gameFunc(commandsQueue):
     global commands
+    (WIDTH, HEIGHT) = (800, 600)
     pygame.init()
     font = pygame.font.SysFont(None, 16)
-    labelNumber = font.render("NUMBER: 609-722-7113", 1, (255, 255, 0))
-    labelA = font.render("A: Accelerate", 1, (255,255,0))
-    labelR = font.render("R: Reverse", 1, (255,255,0))
-    labelB = font.render("B: Brake", 1, (255,255,0))
-    labelI = font.render("I: Left", 1, (255,255,0))
-    labelD = font.render("D: Right", 1, (255,255,0))
+    pygame.mixer.init()
+    pew = pygame.mixer.Sound("pewpew.wav")
+    labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 90, 215))
+    labelA = font.render("A: Accelerate", 1, (85, 90, 215))
+    labelR = font.render("R: Reverse", 1, (85, 90, 215))
+    labelB = font.render("B: Brake", 1, (85, 90, 215))
+    labelI = font.render("I: Left", 1, (85, 90, 215))
+    labelD = font.render("D: Right", 1, (85, 90, 215))
     clock = pygame.time.Clock()
-    display = pygame.display.set_mode((640, 480), 0, 32)
+    display = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.velocity = 1
     back = pygame.image.load("back.png")
-    backRect = tile(back, 640, 480)
+    backRect = tile(back, WIDTH, HEIGHT)
     asteroids = []
     pews = []
     for j in range(1, 5):
-        size = random.randint(15, 50)
-        asteroids.append(Entity(random.randomint(1, 640), random.randint(1, 480), size, size, random.randint(2, 4), random.randint(1, 360)))
+        size = randrange(15, 50)
+        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -80,15 +85,22 @@ def gameFunc(commandsQueue):
             #Derecha- Right
             elif cmd == "D":
                 ship.right()
+            #Shoot
+            elif cmd == "S":
+                pew.play()
         clock.tick(60)
         ship.update()
-        wrap(ship, 640, 480)
-        display.blit(backRect, (0, 0, 640, 480))
+        wrap(ship, WIDTH, HEIGHT)
+        display.blit(backRect, (0, 0, WIDTH, HEIGHT))
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(labelNumber, (0, 0))
         display.blit(img, rect)
-        display.blit(labelA, (0, 0))
-        display.blit(labelB, (0, 25))
-        display.blit(labelR, (0, 50))
-        display.blit(labelI, (0, 75))
-        display.blit(labelD, (0, 100))
+        display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(labelNumber, (0, 0))
+        display.blit(labelA, (0, 25))
+        display.blit(labelB, (0, 50))
+        display.blit(labelR, (0, 75))
+        display.blit(labelI, (0, 100))
+        display.blit(labelD, (0, 125))
+        display.blit(img, rect)
         pygame.display.flip()

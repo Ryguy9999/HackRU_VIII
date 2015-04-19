@@ -10,7 +10,7 @@ class Entity:
         self.y = y
         self.width = width
         self.height = height
-        self.speed = speed
+        self.velocity = speed
         self.rotation = rotation
 
     def update(self):
