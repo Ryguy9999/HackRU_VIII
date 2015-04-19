@@ -26,6 +26,8 @@ def gameFunc(commandsQueue):
     global commands
     pygame.init()
     font = pygame.font.SysFont(None, 16)
+    pygame.mixer.init()
+    pew = pygame.mixer.Sound("pewpew.wav")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (255, 255, 0))
     labelA = font.render("A: Accelerate", 1, (255,255,0))
     labelR = font.render("R: Reverse", 1, (255,255,0))
@@ -61,6 +63,9 @@ def gameFunc(commandsQueue):
             #Derecha- Right
             elif cmd == "D":
                 ship.right()
+            #Shoot
+            elif cmd == "S":
+                pew.play()
         clock.tick(60)
         ship.update()
         wrap(ship, 640, 480)

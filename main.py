@@ -15,7 +15,7 @@ thread.start()
 
 app = Flask(__name__)
 
-commands = "ABRID"
+commands = "ABRIDS"
 
 @app.route('/', methods=["GET", "POST"])
 def hello_monkey(): #respond to text
