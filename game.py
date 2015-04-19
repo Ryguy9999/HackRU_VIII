@@ -40,6 +40,7 @@ def gameFunc(commandsQueue):
     clock = pygame.time.Clock()
     display = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
+    asteroidTex = pygame.image.load("asteroid.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.velocity = 1
     back = pygame.image.load("back.png")
@@ -56,6 +57,7 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
+            wrap(asteroid, WIDTH, HEIGHT)
         for pew in pews:
             pew.update()
             for asteroid in asteroids:
@@ -93,8 +95,11 @@ def gameFunc(commandsQueue):
         wrap(ship, WIDTH, HEIGHT)
         display.blit(backRect, (0, 0, WIDTH, HEIGHT))
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
-        display.blit(labelNumber, (0, 0))
         display.blit(img, rect)
+        display.blit(labelNumber, (0, 0))
+        for asteroid in asteroids:
+            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
+            display.blit(img, rect)
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
