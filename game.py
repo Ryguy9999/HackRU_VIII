@@ -20,6 +20,12 @@ def wrap(rect, width, height):
 def gameFunc(commandsQueue):
     global commands
     pygame.init()
+    font = pygame.font.SysFont(None, 16)
+    labelA = font.render("A: Accelerate", 1, (255,255,0))
+    labelR = font.render("R: Reverse", 1, (255,255,0))
+    labelB = font.render("B: Brake", 1, (255,255,0))
+    labelI = font.render("I: Left", 1, (255,255,0))
+    labelD = font.render("D: Right", 1, (255,255,0))
     clock = pygame.time.Clock()
     display = pygame.display.set_mode((640, 480), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
@@ -54,4 +60,9 @@ def gameFunc(commandsQueue):
         wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
         display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(labelA, (0, 0))
+        display.blit(labelB, (0, 25))
+        display.blit(labelR, (0, 50))
+        display.blit(labelI, (0, 75))
+        display.blit(labelD, (0, 100))
         pygame.display.flip()
