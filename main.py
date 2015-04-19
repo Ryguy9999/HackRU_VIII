@@ -23,6 +23,3 @@ def hello_monkey(): #respond to text
     if body in commands:
         commandsQueue.put(body)
     return ""
-
-if __name__ == "__main__":
-    app.run(debug=True)
