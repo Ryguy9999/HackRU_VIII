@@ -2,9 +2,12 @@
 
 @author: Jason Carrete
 '''
-from flask import Flask, request, redirect
+
 import twilio.twiml, threading, pygame, sys
+from flask import Flask, request, redirect
 from pygame.locals import *
+from twilio.rest import TwilioRestClient
+from flask import request
 
 def game():
     pygame.init()
@@ -19,12 +22,17 @@ gameThread.start()
 
 app = Flask(__name__)
 
-@app.route("/", methods=['GET', 'POST'])
-def server():
-    """Respond to incoming calls with a simple text message."""
+account_sid = "PNdfd2b6f558dc8ff0e72877df59a1a63b"
+auth_token = "fe17ee3c605d7e44cb2462556f986b99"
 
+@app.route("/", methods=['GET', 'POST'])
+def hello_monkey(): #respond to text
     resp = twilio.twiml.Response()
+
+    body = request.form['Body']
+
     resp.message("Hello, Mobile Monkey")
     return str(resp)
+
 if __name__ == "__main__":
     app.run(debug=True)
