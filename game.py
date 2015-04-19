@@ -71,7 +71,7 @@ def gameFunc(commandsQueue):
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(500, 1000)
+                score -= randrange(250, 1000)
                 crunchSound.play()
             for asteroid2 in asteroids:
                 if asteroid != asteroid2 and asteroid.collides(asteroid2):
