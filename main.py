@@ -3,7 +3,8 @@
 @author: Jason Carrete
 '''
 from flask import Flask, request, redirect
-import twilio.twiml, threading, game
+import twilio.twiml
+import threading, game
 thread = Thread(target = gameFunc)
 thread.start()
 
