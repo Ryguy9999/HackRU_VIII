@@ -73,22 +73,22 @@ def gameFunc(commandsQueue):
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
             #Accelerate
-            if cmd == "A":
+            if cmd == "A" or cmd == 'a':
                 ship.accelerate()
             #Brake
-            elif cmd == "B":
-                ship.brake()
+            elif cmd == "B" or cmd == 'b':
+                    ship.brake()
             #Reverse
-            elif cmd == "R":
-                ship.reverse()
+            elif cmd == "R" or cmd == 'r':
+                    ship.reverse()
             #Izquireda- Left
-            elif cmd == "I":
-                ship.left()
+            elif cmd == "I" or cmd == 'i':
+                    ship.left()
             #Derecha- Right
-            elif cmd == "D":
-                ship.right()
+            elif cmd == "D" or cmd == 'd':
+                    ship.right()
             #Shoot
-            elif cmd == "S":
+            elif cmd == "S" or cmd == 's':
                 pew.play()
         clock.tick(60)
         ship.update()
