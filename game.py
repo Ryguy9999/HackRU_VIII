@@ -101,11 +101,9 @@ def gameFunc(commandsQueue):
                     pews.remove(pew)
                     crunchSound.play()
                     score += randrange(1000, 2000)
-                    if asteroid.width > 20:
-                        size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), bool(random.getrandbits(1)), random.randint(3, 5), random.randint(1, 360)))
-                        size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), bool(random.getrandbits(1)), random.randint(3, 5), random.randint(1, 360)))
+                    if asteroid.big:
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
