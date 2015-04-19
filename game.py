@@ -40,9 +40,10 @@ def gameFunc(commandsQueue):
     back = pygame.image.load("back.png")
     backRect = tile(back, 640, 480)
     asteroids = []
+    pews = []
     for j in range(1, 5):
-        size = random.randint(30, 50)
-        asteroids.append(Entity(random.randomint(1, 640), random.randint(1, 480), size, size, random.randint(2, 4), random.randint(1, 360))
+        size = random.randint(15, 50)
+        asteroids.append(Entity(random.randomint(1, 640), random.randint(1, 480), size, size, random.randint(2, 4), random.randint(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -50,6 +51,18 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
+        for pew in pews:
+            pew.update()
+            for asteroid in asteroids:
+                if pew.collides(asteroid):
+                    asteroids.remove(asteroid)
+                    if asteroid.width > 20:
+                        size = asteroid.width / 2 + random.randint(-3, 3)
+                        asteroids.add(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
+                        size = asteroid.width / 2 + random.randint(-3, 3)
+                        asteroids.add(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), size, size, random.randint(3, 5), random.randint(1, 360)))
+            if pew.lifetime <= 0:
+                pews.remove(pew)
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
             #Accelerate
