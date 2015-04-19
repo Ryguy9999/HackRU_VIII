@@ -6,7 +6,7 @@ from Entity import Entity
 from pew import Pew
 commands = []
 score = 0
-(WIDTH, HEIGHT) = (1600, 1200)
+(WIDTH, HEIGHT) = (3000, 3000)
 (S_WIDTH, S_HEIGHT) = (800, 600)
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -48,13 +48,12 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
-    ship.velocity = 6
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
     asteroids = []
     pews = []
-    for j in range(1, 5):
+    for j in range(1, 10):
         size = randrange(15, 50)
         asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
@@ -69,6 +68,8 @@ def gameFunc(commandsQueue):
                 ship.target_rotation = asteroid.rotation
                 asteroids.remove(asteroid)
                 score -= randrange(100, 300)
+        if len(asteroids) < 10:
+            asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
