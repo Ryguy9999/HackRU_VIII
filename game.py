@@ -8,6 +8,15 @@ def tile(img, width, height):
         for y in range(0, height / img.get_rect().height):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
+def wrap(rect, width, height):
+    if rect.x < 0:
+        rect.x = width + rect.x
+    if rect.y < 0:
+        rect.y = height + rect.y
+    if rect.x > width:
+        rect.x = width - rect.x
+    if rect.y > height:
+        rect.y = height - rect.y
 def gameFunc(commandsQueue):
     global commands
     pygame.init()
@@ -42,6 +51,7 @@ def gameFunc(commandsQueue):
                 ship.right()
         clock.tick(60)
         ship.update()
+        wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
         display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         pygame.display.flip()
