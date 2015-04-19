@@ -74,18 +74,26 @@ def gameFunc(commandsQueue):
                 crunchSound.play()
         if len(asteroids) < 10:
             size = randrange(15, 50)
-            asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
+            rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
+            while camera.colliderect(rect):
+                rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
+            asteroids.append(Entity(rect.x, rect.y, rect.width, rect.height, randrange(2, 4), randrange(1, 360)))
 
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
         for ast in asteroids:
-            if(not(ast.x < camera.x or ast.y < camera.y or ast.x > camera.x + camera.width or ast.y > camera.y + camera.height)):
+            if not(ast.x < camera.x or ast.y < camera.y or ast.x > camera.x + camera.width or ast.y > camera.y + camera.height):
                 offScreen = False
         if offScreen:
             for i in range(3):
                 asteroids.remove(asteroids[randrange(0, len(asteroids))])
             for i in range(3):
-                asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
+                x = randrange(1, WIDTH)
+                y = randrange(1, HEIGHT)
+                while ast.x < camera.x and ast.y < camera.y and ast.x > camera.x + camera.width and ast.y > camera.y + camera.height:
+                    x = randrange(1, WIDTH)
+                    y = randrange(1, HEIGHT)
+                asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
