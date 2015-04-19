@@ -43,5 +43,5 @@ def gameFunc(commandsQueue):
         clock.tick(60)
         ship.update()
         display.blit(backRect, (0, 0, 640, 480))
-        display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(pygame.transform.rotozoom(shipTex, shipTex.rotation, 1), (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         pygame.display.flip()
