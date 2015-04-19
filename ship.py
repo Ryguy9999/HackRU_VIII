@@ -2,7 +2,7 @@ import math
 MAX_SPEED = 6
 MAX_REVERSE = -3
 ACCELERATION = 2
-ROTATION = 6
+ROTATION = 10
 BRAKING = 0.1
 REVERSE = 2
 MAX_TURN = 5
@@ -59,11 +59,11 @@ class Ship:
 				self.velocity -= REVERSE
 
 	def left(self):
-		self.target_rotation -= ROTATION
-		if self.target_rotation < 0:
-			self.target_rotation += 360
+		self.target_rotation += ROTATION
+		if self.target_rotation > 0:
+			self.target_rotation -= 360
 
 	def right(self):
-		self.target_rotation += ROTATION
-		if self.target_rotation > 360:
-			self.target_rotation -= 360
+		self.target_rotation -= ROTATION
+		if self.target_rotation < 360:
+			self.target_rotation += 360

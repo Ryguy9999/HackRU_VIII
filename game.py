@@ -126,7 +126,6 @@ def gameFunc(commandsQueue):
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
 
-
         display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
