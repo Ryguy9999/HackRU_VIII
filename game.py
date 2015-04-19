@@ -45,7 +45,7 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
-    ship.velocity = 1
+    ship.velocity = 6
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
@@ -101,8 +101,8 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        camera.x = ship.x - S_WIDTH / 2
-        camera.y = ship.y - S_HEIGHT / 2
+        camera.x = camera.x + ((ship.x - S_WIDTH / 2) - camera.x) / 16
+        camera.y = camera.y + ((ship.y - S_HEIGHT / 2) - camera.y) / 16
         if camera.x < 0:
             camera.x = 0
         elif camera.x + camera.width > WIDTH:
