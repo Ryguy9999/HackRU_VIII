@@ -90,26 +90,6 @@ def gameFunc(commandsQueue):
             while camera.colliderect(rect):
                 rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             asteroids.append(Entity(rect.x, rect.y, bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360)))
-
-<<<<<<< HEAD
-        #if there are no asteroids on screen, delete three and respawn them
-        offScreen = True
-        for ast in asteroids:
-            if not(ast.x > camera.x and ast.y > camera.y and ast.x < camera.x + camera.width and ast.y < camera.y + camera.height):
-                offScreen = False
-        if offScreen:
-            for i in range(3):
-                asteroids.remove(asteroids[randrange(0, len(asteroids))])
-            for i in range(3):
-                x = randrange(1, WIDTH)
-                y = randrange(1, HEIGHT)
-                while ast.x > camera.x and ast.y > camera.y and ast.x < camera.x + camera.width and ast.y < camera.y + camera.height:
-                    x = randrange(1, WIDTH)
-                    y = randrange(1, HEIGHT)
-                asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
-=======
-
->>>>>>> 9f08083fa7e17e260926e75ba17a23c0f7daf1f5
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
@@ -119,11 +99,9 @@ def gameFunc(commandsQueue):
                     pews.remove(pew)
                     crunchSound.play()
                     score += randrange(1000, 2000)
-                    if asteroid.width > 20:
-                        size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), bool(random.getrandbits(1)), random.randint(3, 5), random.randint(1, 360)))
-                        size = asteroid.width / 2 + random.randint(-3, 3)
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), bool(random.getrandbits(1)), random.randint(3, 5), random.randint(1, 360)))
+                    if asteroid.big:
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
