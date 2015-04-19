@@ -69,6 +69,7 @@ def gameFunc(commandsQueue):
                 asteroids.remove(asteroid)
                 score -= randrange(100, 300)
         if len(asteroids) < 10:
+            size = randrange(15, 50)
             asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
         for pew in pews:
             pew.update()
