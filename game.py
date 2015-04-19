@@ -43,7 +43,7 @@ def gameFunc(commandsQueue):
     labelA = font.render("A: Accelerate", 1, (85, 215, 200))
     labelR = font.render("R: Reverse", 1, (85, 215, 200))
     labelB = font.render("B: Brake", 1, (85, 215, 200))
-    labelI = font.render("I: Left", 1, (85, 215, 200))
+    labelI = font.render("I (eye): Left", 1, (85, 215, 200))
     labelD = font.render("D: Right", 1, (85, 215, 200))
     labelS = font.render("S: Shoot", 1, (85, 215, 200))
     clock = pygame.time.Clock()
@@ -90,8 +90,6 @@ def gameFunc(commandsQueue):
             while camera.colliderect(rect):
                 rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             asteroids.append(Entity(rect.x, rect.y, bool(random.getrandbits(1)), randrange(2, 4), randrange(1, 360)))
-
-
         for pew in pews:
             pew.update()
             wrap(pew, WIDTH, HEIGHT)
