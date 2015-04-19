@@ -13,9 +13,11 @@ class Ship:
 		self.height = height
 		self.rotation = 0
 		self.velocity = 0
+
 	def update(self):
 		self.x += math.cos(math.radians(self.rotation)) * self.velocity
 		self.y -= math.sin(math.radians(self.rotation)) * self.velocity
+
 	def collides(self, obj):
 		return not (self.x + self.width < obj.x or obj.x + obj.width < self.x or self.y + self.height < obj.y or obj.y + obj.height < self.y)
 

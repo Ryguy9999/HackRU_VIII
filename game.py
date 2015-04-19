@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, random
 from pygame.locals import *
 from ship import *
 commands = []
@@ -38,11 +38,17 @@ def gameFunc(commandsQueue):
     ship.velocity = 1
     back = pygame.image.load("back.png")
     backRect = tile(back, 640, 480)
+    asteroids = []
+    for j in range(1, 5):
+        size = random.randint(30, 50)
+        asteroids.append(Entity(random.randomint(1, 640), random.randint(1, 480), size, size, random.randint(2, 4), random.randint(1, 360))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
                 sys.exit()
                 pygame.quit()
+        for asteroid in asteroids:
+            asteroid.update()
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
             #Accelerate
