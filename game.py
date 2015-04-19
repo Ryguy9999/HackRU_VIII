@@ -2,7 +2,7 @@ import pygame, sys, random
 from pygame.locals import *
 from ship import *
 commands = []
-def rot_center(image, angle, rect):
+def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
     rot_image = pygame.transform.rotozoom(image, angle, 1)
     rot_rect = rot_image.get_rect(center=rect.center)
@@ -26,6 +26,7 @@ def gameFunc(commandsQueue):
     global commands
     pygame.init()
     font = pygame.font.SysFont(None, 16)
+    labelNumber = font.render("NUMBER: 609-722-7113", 1, (255, 255, 0))
     labelA = font.render("A: Accelerate", 1, (255,255,0))
     labelR = font.render("R: Reverse", 1, (255,255,0))
     labelB = font.render("B: Brake", 1, (255,255,0))
@@ -70,11 +71,11 @@ def gameFunc(commandsQueue):
         ship.update()
         wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
-        display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
+        display.blit(img, rect)
         display.blit(labelA, (0, 0))
         display.blit(labelB, (0, 25))
         display.blit(labelR, (0, 50))
         display.blit(labelI, (0, 75))
         display.blit(labelD, (0, 100))
-        display.blit(rotate_center(shipTex, ship.rotation, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height)))
         pygame.display.flip()
