@@ -9,6 +9,7 @@ host = socket.gethostname()
 port = 9999
 server.bind((host, port))
 server.listen(5)
+print "Listening"
 client, address = server.accept()
 print "Accepted"
 app = Flask(__name__)
