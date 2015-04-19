@@ -12,11 +12,13 @@ def giveCommand(command):
     global commands
     commands.append(command)
 def gameFunc():
+    global commands
     pygame.init()
     clock = pygame.time.Clock()
     display = pygame.display.set_mode((640, 480), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
+    ship.velocity = 1
     back = pygame.image.load("back.png")
     backRect = tile(back, 640, 480)
     while 1:
@@ -25,7 +27,7 @@ def gameFunc():
                 sys.exit()
                 pygame.quit()
         clock.tick(60)
-        #ship.update()
+        ship.update()
         display.blit(backRect, (0, 0, 640, 480))
         display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         pygame.display.flip()
