@@ -42,7 +42,7 @@ def gameFunc(commandsQueue):
     labelA = font.render("A: Accelerate", 1, (85, 215, 200))
     labelR = font.render("R: Reverse", 1, (85, 215, 200))
     labelB = font.render("B: Brake", 1, (85, 215, 200))
-    labelI = font.render("I: Left", 1, (85, 215, 200))
+    labelI = font.render("I (eye): Left", 1, (85, 215, 200))
     labelD = font.render("D: Right", 1, (85, 215, 200))
     labelS = font.render("S: Shoot", 1, (85, 215, 200))
     clock = pygame.time.Clock()
@@ -89,7 +89,7 @@ def gameFunc(commandsQueue):
         #if there are no asteroids on screen, delete three and respawn them
         offScreen = True
         for ast in asteroids:
-            if not(ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height):
+            if not(ast.x > camera.x and ast.y > camera.y and ast.x < camera.x + camera.width and ast.y < camera.y + camera.height):
                 offScreen = False
         if offScreen:
             for i in range(3):
@@ -97,7 +97,7 @@ def gameFunc(commandsQueue):
             for i in range(3):
                 x = randrange(1, WIDTH)
                 y = randrange(1, HEIGHT)
-                while ast.x > camera.x and ast.y < camera.y and ast.x < camera.x + camera.width and ast.y > camera.y + camera.height:
+                while ast.x > camera.x and ast.y > camera.y and ast.x < camera.x + camera.width and ast.y < camera.y + camera.height:
                     x = randrange(1, WIDTH)
                     y = randrange(1, HEIGHT)
                 asteroids.append(Entity(x, y, size, size, randrange(2, 4), randrange(1, 360)))
