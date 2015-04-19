@@ -1,6 +1,8 @@
-import pygame, sys
+import pygame, sys, random
+from random import randrange
 from pygame.locals import *
 from ship import *
+from Entity import Entity
 commands = []
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -39,11 +41,17 @@ def gameFunc(commandsQueue):
     ship.velocity = 1
     back = pygame.image.load("back.png")
     backRect = tile(back, 640, 480)
+    asteroids = []
+    for j in range(1, 5):
+        size = randrange(30, 50)
+        asteroids.append(Entity(randrange(1, 640), randrange(1, 480), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
                 sys.exit()
                 pygame.quit()
+        for asteroid in asteroids:
+            asteroid.update()
         while not commandsQueue.empty():
             cmd = commandsQueue.get()
             #Accelerate
@@ -66,12 +74,11 @@ def gameFunc(commandsQueue):
         wrap(ship, 640, 480)
         display.blit(backRect, (0, 0, 640, 480))
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
-        display.blit(shipTex, (ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
+        display.blit(img, rect)
         display.blit(labelA, (0, 0))
         display.blit(labelB, (0, 25))
         display.blit(labelR, (0, 50))
         display.blit(labelI, (0, 75))
         display.blit(labelD, (0, 100))
-        display.blit(img, rect)
         pygame.display.flip()
