@@ -155,7 +155,7 @@ def gameFunc(commandsQueue):
             (img, rect) = rotate_center(pewTex, pew.rotation, pygame.Rect(pew.x, pew.y, pew.width, pew.height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
-            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
+            (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroidTex.get_rect().width, asteroidTex.get_rect().height))
             display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(goalTex, (goal_x - camera.x, goal_y - camera.y, goalTex.get_rect().width, goalTex.get_rect().height))
         display.blit(labelNumber, (0, 0))
