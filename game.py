@@ -50,6 +50,8 @@ def gameFunc(commandsQueue):
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
+    ship.target_rotation = 305
+    ship.velocity = 6
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
     camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
@@ -65,7 +67,7 @@ def gameFunc(commandsQueue):
                 pygame.quit()
         for asteroid in asteroids:
             asteroid.update()
-            wrap(asteroid, WIDTH, HEIGHT, (camera.x, camera.y))
+            wrap(asteroid, S_WIDTH, S_HEIGHT, (camera.x, camera.y))
             if asteroid.collides(ship):
                 ship.stun_timer = 100
                 ship.delta_x = (ship.x - asteroid.x) / 16
