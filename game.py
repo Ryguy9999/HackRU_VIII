@@ -6,7 +6,7 @@ from Entity import Entity
 from pew import Pew
 commands = []
 score = 0
-(WIDTH, HEIGHT) = (3000, 3000)
+(WIDTH, HEIGHT) = (5000, 5000)
 (S_WIDTH, S_HEIGHT) = (800, 600)
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
@@ -70,9 +70,16 @@ def gameFunc(commandsQueue):
                 ship.delta_x = (ship.x - asteroid.x) / 16
                 ship.delta_y = (ship.y - asteroid.y) / 16
                 asteroids.remove(asteroid)
-                score -= randrange(100, 300)
+                score -= randrange(500, 1000)
                 crunchSound.play()
-        if len(asteroids) < 10:
+            for asteroid2 in asteroids:
+                if asteroid != asteroid2 and asteroid.collides(asteroid2):
+                    asteroids.remove(asteroid)
+                    asteroids.remove(asteroid2)
+                    if asteroid.collides(camera):
+                        crunchSound.play()
+                    break
+        if len(asteroids) < 100:
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
@@ -132,8 +139,12 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        camera.x = camera.x + ((ship.x - S_WIDTH / 2) - camera.x) / 16
-        camera.y = camera.y + ((ship.y - S_HEIGHT / 2) - camera.y) / 16
+        if ship.stun_timer > 0
+            camera.x = ship.x - S_WIDTH / 2
+            camera.y = ship.y - S_HEIGHT / 2
+        else:
+            camera.x = camera.x + ((ship.x - S_WIDTH / 2) - camera.x) / 16
+            camera.y = camera.y + ((ship.y - S_HEIGHT / 2) - camera.y) / 16
         if camera.x < 0:
             camera.x = 0
         elif camera.x + camera.width > WIDTH:
