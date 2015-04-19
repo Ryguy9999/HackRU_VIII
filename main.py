@@ -22,4 +22,8 @@ def hello_monkey(): #respond to text
     body = request.form["Body"]
     if body in commands:
         commandsQueue.put(body)
-    return ""
+        return ""
+    else:
+        return "Invalid command"
+
+app.run()
