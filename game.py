@@ -26,6 +26,18 @@ def gameFunc():
             if event.type == QUIT:
                 sys.exit()
                 pygame.quit()
+        while len(commands) > 0:
+            cmd = commands.pop()
+            if cmd == "A":
+                print "A"
+            elif cmd == "B":
+                print "B"
+            elif cmd == "R":
+                print "R"
+            elif cmd == "I":
+                print "I"
+            elif cmd == "D":
+                print "D"
         clock.tick(60)
         ship.update()
         display.blit(backRect, (0, 0, 640, 480))
