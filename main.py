@@ -20,7 +20,7 @@ gameThread.start()
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
-def hello_monkey():
+def server():
     """Respond to incoming calls with a simple text message."""
 
     resp = twilio.twiml.Response()
