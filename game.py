@@ -53,7 +53,7 @@ def gameFunc(commandsQueue):
     pews = []
     for j in range(1, 5):
         size = randrange(15, 50)
-        #asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
+        asteroids.append(Entity(randrange(1, WIDTH), randrange(1, HEIGHT), size, size, randrange(2, 4), randrange(1, 360)))
     while 1:
         for event in pygame.event.get():
             if event.type == QUIT:
