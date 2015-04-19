@@ -5,6 +5,8 @@ from ship import *
 from Entity import Entity
 from pew import Pew
 commands = []
+(WIDTH, HEIGHT) = (1600, 1200)
+(S_WIDTH, S_HEIGHT) = (800, 600)
 def rotate_center(image, angle, rect):
     """rotate an image while keeping its center"""
     rot_image = pygame.transform.rotozoom(image, angle, 1)
@@ -12,22 +14,21 @@ def rotate_center(image, angle, rect):
     return rot_image,rot_rect
 def tile(img, width, height):
     surface = pygame.Surface((width, height))
-    for x in range(0, width / img.get_rect().width):
-        for y in range(0, height / img.get_rect().height):
+    for x in range(0, width / img.get_rect().width + 1):
+        for y in range(0, height / img.get_rect().height + 1):
             surface.blit(img, (x * img.get_rect().width, y * img.get_rect().height, img.get_rect().width, img.get_rect().height))
     return surface
 def wrap(rect, width, height):
-    if rect.x < -rect.width:
-        rect.x = width + rect.width / 2
-    if rect.y < -rect.height:
-        rect.y = height + rect.height / 2
-    if rect.x > width + rect.width:
-        rect.x = width - rect.x
-    if rect.y > height + rect.height:
-        rect.y = height - rect.y
+    if rect.x < -rect.width / 2:
+        rect.x = WIDTH
+    if rect.y < -rect.height / 2:
+        rect.y = HEIGHT
+    if rect.x > WIDTH:
+        rect.x = 0
+    if rect.y > HEIGHT:
+        rect.y = 0
 def gameFunc(commandsQueue):
     global commands
-    (WIDTH, HEIGHT) = (800, 600)
     pygame.init()
     font = pygame.font.SysFont(None, 32)
     pygame.mixer.init()
@@ -41,12 +42,13 @@ def gameFunc(commandsQueue):
     labelI = font.render("I: Left", 1, (85, 215, 200))
     labelD = font.render("D: Right", 1, (85, 215, 200))
     clock = pygame.time.Clock()
-    display = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
+    display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.velocity = 1
     back = pygame.image.load("back.png")
     backRect = tile(back, WIDTH, HEIGHT)
+    camera = Rect(0, 0, S_WIDTH, S_HEIGHT)
     asteroids = []
     pews = []
     for j in range(1, 5):
@@ -99,24 +101,33 @@ def gameFunc(commandsQueue):
             elif cmd == "S" or cmd == 's':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
-        clock.tick(60)
+        camera.x = ship.x - S_WIDTH / 2
+        camera.y = ship.y - S_HEIGHT / 2
+        if camera.x < 0:
+            camera.x = 0
+        elif camera.x + camera.width > WIDTH:
+            camera.x = WIDTH - camera.width
+        if camera.y < 0:
+            camera.y = 0
+        elif camera.y + camera.height > HEIGHT:
+            camera.y = HEIGHT - camera.height
         ship.update()
         wrap(ship, WIDTH, HEIGHT)
-        display.blit(backRect, (0, 0, WIDTH, HEIGHT))
+        display.blit(backRect, (0, 0, WIDTH, HEIGHT), camera)
         (img, rect) = rotate_center(shipTex, ship.rotation, pygame.Rect(ship.x, ship.y, shipTex.get_rect().width, shipTex.get_rect().height))
-        display.blit(img, rect)
-        display.blit(labelNumber, (0, 0))
+        display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
+
         for pew in pews:
             (img, rect) = rotate_center(pewTex, pew.rotation, pygame.Rect(pew.x, pew.y, pew.width, pew.height))
-            display.blit(img, rect)
+            display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         for asteroid in asteroids:
             (img, rect) = rotate_center(asteroidTex, asteroid.rotation, pygame.Rect(asteroid.x, asteroid.y, asteroid.width, asteroid.height))
-            display.blit(img, rect)
+            display.blit(img, (rect.x - camera.x, rect.y - camera.y, rect.width, rect.height))
         display.blit(labelNumber, (0, 0))
         display.blit(labelA, (0, 25))
         display.blit(labelB, (0, 50))
         display.blit(labelR, (0, 75))
         display.blit(labelI, (0, 100))
         display.blit(labelD, (0, 125))
-        display.blit(img, rect)
         pygame.display.flip()
+        clock.tick(60)
