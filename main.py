@@ -15,13 +15,14 @@ thread.start()
 
 app = Flask(__name__)
 
-commandsU = "ABRIDS"
-commandsL = "abrids"
+commandsU = "WASDBF"
+commandsL = "wasdbf"
 
 @app.route('/', methods=["GET", "POST"])
 def hello_monkey(): #respond to text
     resp = twilio.twiml.Response()
     body = request.form["Body"]
+    print body
     if body in commandsU or body in commandsL:
         commandsQueue.put(body)
         return ""

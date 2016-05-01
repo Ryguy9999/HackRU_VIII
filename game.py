@@ -46,20 +46,20 @@ def gameFunc(commandsQueue):
     asteroidTex = pygame.image.load("asteroid.png")
     explosionTex = pygame.image.load("explosion.png")
     labelNumber = font.render("NUMBER: 609-722-7113", 1, (85, 215, 200))
-    labelA = font.render("A: Accelerate", 1, (85, 215, 200))
-    labelR = font.render("R: Reverse", 1, (85, 215, 200))
+    labelA = font.render("W: Accelerate", 1, (85, 215, 200))
+    labelR = font.render("S: Reverse", 1, (85, 215, 200))
     labelB = font.render("B: Brake", 1, (85, 215, 200))
-    labelI = font.render("I (eye): Left", 1, (85, 215, 200))
+    labelI = font.render("A: Left", 1, (85, 215, 200))
     labelD = font.render("D: Right", 1, (85, 215, 200))
-    labelS = font.render("S: Shoot", 1, (85, 215, 200))
+    labelS = font.render("F: Fire", 1, (85, 215, 200))
     clock = pygame.time.Clock()
     info = pygame.display.Info()
-    (S_WIDTH, S_HEIGHT) = (1920, 1080)
+    (S_WIDTH, S_HEIGHT) = (800, 600)
     display = pygame.display.set_mode((S_WIDTH, S_HEIGHT), 0, 32)
     shipTex = pygame.image.load("spaceship.png")
     ship = Ship(0, 0, shipTex.get_rect().width, shipTex.get_rect().height)
     ship.target_rotation = 305
-    ship.velocity = 6
+    ship.velocity = 0
     goalTex = pygame.image.load("goal.png")
     (goal_x, goal_y) = (WIDTH / 2, HEIGHT / 2)
     back = pygame.image.load("back.png")
@@ -94,11 +94,13 @@ def gameFunc(commandsQueue):
                     if asteroid.collides(camera):
                         crunchSound.play()
                     break
+            if not asteroid in asteroids:
+                break
         for explosion in explosions:
             if explosion.update():
                 explosions.remove(explosion)
                 continue
-        if len(asteroids) < 50:
+        if len(asteroids) < 40:
             size = randrange(15, 50)
             rect = Rect(randrange(1, WIDTH), randrange(1, HEIGHT), size, size)
             while camera.colliderect(rect):
@@ -114,8 +116,8 @@ def gameFunc(commandsQueue):
                     crunchSound.play()
                     score += randrange(1000, 3000)
                     if asteroid.big:
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
-                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360)))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360), 32, 32))
+                        asteroids.append(Entity(asteroid.x + random.randint(-5, 5), asteroid.y + random.randint(-5, 5), False, random.randint(3, 5), random.randint(1, 360), 32, 32))
                     break
             if pew.lifetime <= 0:
                 pews.remove(pew)
@@ -127,23 +129,23 @@ def gameFunc(commandsQueue):
             cmd = commandsQueue.get()
             comSent.append(cmd.upper())
             #Accelerate
-            if cmd == "A" or cmd == 'a':
+            if cmd == "W" or cmd == 'w':
                 ship.accelerate()
                 fwoom.play()
             #Brake
             elif cmd == "B" or cmd == 'b':
                     ship.brake()
             #Reverse
-            elif cmd == "R" or cmd == 'r':
+            elif cmd == "S" or cmd == 's':
                     ship.reverse()
             #Izquireda- Left
-            elif cmd == "I" or cmd == 'i':
+            elif cmd == "A" or cmd == 'a':
                     ship.left()
             #Derecha- Right
             elif cmd == "D" or cmd == 'd':
                     ship.right()
             #Shoot
-            elif cmd == "S" or cmd == 's':
+            elif cmd == "F" or cmd == 'f':
                 pewSound.play()
                 pews.append(Pew(ship.x + shipTex.get_rect().width / 2, ship.y + shipTex.get_rect().height / 2, pewTex.get_rect().width, pewTex.get_rect().height, 10, ship.rotation))
         if len(comSent) > 10:
